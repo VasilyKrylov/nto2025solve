@@ -325,3 +325,49 @@ Priority: u=0
 UTC Arrival Time: Jan 22, 2025 19:35:52.600327626 UTC
 ## Markdown 
 [Как пользоваться](https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet#lists)
+
+## Враг врага 1-1
+через почту в архиве npp.zip
+```
+From - Tue Dec 10 18:32:05 2024
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+Return-Path: admin@mailservice.pma.ru
+Received: from [IPv6:::ffff:127.0.0.1] (DESKTOP-5UI5AFR.domain.com [127.0.0.1])
+    by DESKTOP-5UI5AFR with ESMTPA
+    ; Fri, 22 Nov 2024 21:19:49 +0300
+Message-ID: &lt;7580751D-294B-4A69-AE4B-D42123B5FC66@DESKTOP-5UI5AFR&gt;
+MIME-Version: 1.0
+To: "rromanov@mailservice.pma.ru" 
+From: admin 
+Subject:
+ =?utf-8?B?0J7QsdC90L7QstC70LXQvdC40LUg0L/QsNGA0L7Qu9C10Lkg0L/QvtC70Yy=?=
+ =?utf-8?B?0LfQvtCy0LDRgtC10LvQtdC5?=
+Date: Fri, 22 Nov 2024 21:19:49 +0300
+Importance: normal
+X-Priority: 3
+Content-Type: multipart/mixed;
+    boundary="_13058A1F-367B-49C5-9E07-ACB8AEE1516D_"
+
+--_13058A1F-367B-49C5-9E07-ACB8AEE1516D_
+Content-Type: multipart/alternative;
+    boundary="_BA29F595-B28D-449D-85E7-8549EB2289F3_"
+
+--_BA29F595-B28D-449D-85E7-8549EB2289F3_
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
+
+DQrQntCx0L3QvtCy0LjRgtC1INC/0LDRgNC+0LvRjCDQsiDRgdC+0L7RgtCy0LXRgtGB0YLQstC4
+0Lgg0YEg0L/RgNC40LrRgNC10L/Qu9C10L3QvdC+0Lkg0YLQsNCx0LvQuNGG0LXQuS4NCg==
+
+--_BA29F595-B28D-449D-85E7-8549EB2289F3_
+Content-Transfer-Encoding: base64
+Content-Type: text/html; charset="utf-8"
+
+PGh0bWwgeG1sbnM6bz0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6b2ZmaWNlIiB4
+bWxuczp3PSJ1cm46c2NoZW1hcy1taWNyb3NvZnQtY29tOm9mZmljZTp3b3JkIiB4bWxuczptPSJo
+dHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL29mZmljZS8yMDA0LzEyL29tbWwiIHhtbG5zPSJo
+dHRwOi8vd3d3LnczLm9yZy9UUi9SRUMtaHRtbDQwIj48aGVhZD48bWV0YSBodHRwLWVxdWl2PUNv
+bnRlbnQtVHlwZSBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9dXRmLTgiPjxtZXRhIG5hbWU9
+
+```
