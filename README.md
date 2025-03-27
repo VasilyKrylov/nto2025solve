@@ -8,6 +8,26 @@
 
 ## Web
 ## Pwn 1
+Из функции write_file() : \
+```
+  printf("Enter file content: ");
+  __isoc99_scanf("%256s", file_buffer);
+  flush();
+  file = open(path, 65, 0, v0, v1, v2);
+```
+При этом file buffer сам размером 256 байт, а после него лежит secret password:
+```
+.bss:0000000000004120 file_buffer     db 100h dup(?)          ; DATA XREF: init_storage+70↑o
+.bss:0000000000004120                                         ; init_storage+A8↑o ...
+.bss:0000000000004220                 public secret_password
+.bss:0000000000004220 ; char secret_password[32]
+.bss:0000000000004220 secret_password db 20h dup(?)   
+```
+scanf("%256s", file_buffer) записывает максимум 256 байт + 1 ноль байт, который попадёт уже в secret_pasword. В итоге пароль начинается с 0x00, то есть по факту пустая строка. \
+Решение: \
+* Записываем в файл 256 букв \
+* Запрашиваем чтение 00000000 и при запросе пароля просто нажимаем enter \
+* Получаем флаг
 ```
 nc 10.10.11.101 9001
                     
