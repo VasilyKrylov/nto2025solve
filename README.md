@@ -86,19 +86,19 @@ Commands:
 
 auth/main.py: \
 
-1)Хранение паролей в открытом виде: \
+1. Хранение паролей в открытом виде: \
 	В методе /register пароль пользователя сохраняется в базу данных без хэширования: \
 	db_user = models.User(username=user.username, password=user.password) \
     Злоумышленник получает доступ к базе данных (например, через SQL-инъекцию или компрометацию сервера). \
     Пароли хранятся в открытом виде, что позволяет злоумышленнику использовать их для входа в систему под другими пользователями. \
-    фикс: \
-    ```from passlib.context import CryptContext
+    фикс: 
+    ```
+    from passlib.context import CryptContext
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     hashed_password = pwd_context.hash(user.password)
     db_user = models.User(username=user.username, password=hashed_password)
-    
-     ```
-2)Аналогично 1му - Проверка пароля без хэширования: \
+    ```
+2. Аналогично 1му - Проверка пароля без хэширования: \
     В методе /token пароль проверяется напрямую: \
     
     ```
@@ -109,7 +109,7 @@ auth/main.py: \
     ``` if not user or not pwd_context.verify(form_data.password, user.password):``` 
 
 
-3)Отсутствие ограничения времени жизни токена  \
+3. Отсутствие ограничения времени жизни токена  \
 	В коде используется JWT для создания токенов доступа, однако не указано его время жизни. \
 	access_token = security.create_access_token(data={"sub": user.username}) \
 	    Злоумышленник перехватывает JWT-токен (например, через XSS или MitM). \
@@ -117,16 +117,17 @@ auth/main.py: \
     фикс: \
     установить реалистичное время истечения токена: ACCESS_TOKEN_EXPIRE_MINUTES = 52 \
     
-4)Токены добавляются в чёрный список только при выходе пользователя, если злоумышленник перехватит действующий токен до его добавления в чёрный список, он сможет использовать его до окончания лайфтайма: \
-	async def  \
+4. Токены добавляются в чёрный список только при выходе пользователя, если злоумышленник перехватит действующий токен до его добавления в чёрный список, он сможет использовать его до окончания лайфтайма: \
+	```
+ 	async def  \
 	@app.post("/logout") \
 	logout(token: str = Depends(oauth2_scheme)): \
 	    security.blacklist_token(token) \
 	    return {"msg": "Successfully logged out"} \
-	    
+	```
 auth/models.py \
 
-1)Отсутсвтуют какие-либо ограничения на длинну и значения пароля и юзернейма: \
+1. Отсутсвтуют какие-либо ограничения на длинну и значения пароля и юзернейма: \
 	username = Column(String, unique=True, index=True) \
 	password = Column(String) \
 	Отсутствие валидации входных данных   \
@@ -142,7 +143,7 @@ auth/models.py \
 	
 auth/security.py
 
-1)В файле используется фиксированный секретный ключ(как константа):
+1. В файле используется фиксированный секретный ключ(как константа):
 	SECRET_KEY = "Abqh4LSVdohqrlhtalvifAmEsymAvY9p"
 	Используя этот ключ, злоумышленник может подделывать JWT-токены.
 	фикс:
@@ -150,12 +151,12 @@ auth/security.py
 	from secrets import token_hex
 	SECRET_KEY = os.getenv("SECRET_KEY", token_hex(32))
 	
-2) Огромное вреся жизни токена:
+2. Огромное вреся жизни токена:
 	ACCESS_TOKEN_EXPIRE_MINUTES = 10000000000000000000 
 	
-3)Отсутствие механизма обновления токена.
+3. Отсутствие механизма обновления токена.
 
-4)Нереалистичные значения для блокировки пользователей.
+4. Нереалистичные значения для блокировки пользователей.
 	MAX_LOGIN_ATTEMPTS = 10000000000000000000
 	BLOCK_TIME_MINUTES = 0
 	Вектор атаки: 
@@ -171,48 +172,53 @@ auth/security.py
 
 /app/diary/settings.py
 
-1)Режим DEBUG включен (DEBUG = True)
+1. Режим DEBUG включен (DEBUG = True)
 	Злоумышленник может вызвать ошибку и получить доступ к внутренней информации, что упрощает дальнейшие атаки.
 	фикс:
 	отключить debug
 	
-2)Секретный ключ Djangoявляется константой. Ключ используется для шифрования сессий, генерации токенов и других security-related функций.
-	SECRET_KEY = "Abqh4LSVdohqrlhtalvifAmEsymAvY9p"
+2. Секретный ключ Djangoявляется константой. Ключ используется для шифрования сессий, генерации токенов и других security-related функций. \
+	```
+ 	SECRET_KEY = "Abqh4LSVdohqrlhtalvifAmEsymAvY9p"
 	фикс:
 	import os
 	from secrets import token_hex
 	SECRET_KEY = os.getenv("SECRET_KEY", token_hex(32))
+ 	```
 	
-3)Отсутствие HTTPS
-	Вектор атаки:
-	может привести к атакам MITM.
-	фикс:
-	uvicorn.run(app, host={ipadr}, port=8000, ssl_keyfile={key}, ssl_certfile="{cert})
+3. Отсутствие HTTPS
+	* Вектор атаки:
+	** может привести к атакам MITM.
+	* фикс:
+	```
+ 	uvicorn.run(app, host={ipadr}, port=8000, ssl_keyfile={key}, ssl_certfile="{cert})
+  	```
 
-/app/diary/urls.py
+/app/diary/urls.py \
 
-1) Нет ограничений на частоту запросов к API/формам (например, login/), что упрощает брутфорс.
+1. Нет ограничений на частоту запросов к API/формам (например, login/), что упрощает брутфорс. \
 
-/app/mysite/views.py
+/app/mysite/views.py \
 
-1). SQL-инъекции
-	user_login: Сырой SQL-запрос с вставкой username и password.
-        mark_add_view: SQL-инъекция в INSERT через параметры student_login, mark_value, date.
-        search: Сырой запрос с LIKE '{query}'.
-    Вектор атаки: 
-    Злоумышленник может выполнить произвольные SQL-запросы, украсть данные, удалить таблицы или получить контроль над БД.
-    фикс:
-    использовать ORM Django или параметризованные запросы (cursor.execute("SELECT ... WHERE login = %s", [username])).
+1. SQL-инъекции 
+	* user_login: Сырой SQL-запрос с вставкой username и password.
+        * mark_add_view: SQL-инъекция в INSERT через параметры student_login, mark_value, date. 
+        * search: Сырой запрос с LIKE '{query}'.
+    Вектор атаки: \
+    Злоумышленник может выполнить произвольные SQL-запросы, украсть данные, удалить таблицы или получить контроль над БД. \
+    фикс: \
+    использовать ORM Django или параметризованные запросы (cursor.execute("SELECT ... WHERE login = %s", [username])). \
     
 
-2)Отключена защита от CSRF
-	@csrf_exempt
-	фикс:
-	убрать данную строку, настроить CORS с использованием middleware.
+2. Отключена защита от CSRF \
+	@csrf_exempt \  
+	фикс: \
+	убрать данную строку, настроить CORS с использованием middleware. \
 	
 
-3). Недостаточная проверка прав доступа. В profile_edit нет проверки, что пользователь редактирует свой профиль.
+3. Недостаточная проверка прав доступа. В profile_edit нет проверки, что пользователь редактирует свой профиль.
 	фикс:
+ 	```python
 	    if request.method == 'POST':
         form = EditProfileForm(request.POST)
         if form.is_valid():
@@ -220,10 +226,10 @@ auth/security.py
             new_username = cd.get('username')
             if new_username != user.login:
                 return HttpResponseForbidden("Нельзя изменить чужой логин")
-                
+        ```
 /app/mysite/migrations/0001_initial.py
 
-1)Уязвимость в User.photo (FilePathField)
+1. Уязвимость в User.photo (FilePathField)
     FilePathField без ограничений (path, match) позволяет указывать любые пути на сервере.
     Вектор атаки: 
     Злоумышленник может получить доступ к системным файлам (например, ../../etc/passwd).
