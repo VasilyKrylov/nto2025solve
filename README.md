@@ -8,7 +8,7 @@
 
 ## Web
 ## Pwn 1
-Из функции write_file() : \
+Из функции write_file() : 
 ```
   printf("Enter file content: ");
   __isoc99_scanf("%256s", file_buffer);
