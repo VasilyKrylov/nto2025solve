@@ -319,6 +319,9 @@ Cookie: hide-dotfile=no; __wzd44828fdba9134e8d1a6f=1737574404|9130fd746c6b
 Priority: u=0
 ```
 * 81.177.221.242 - c этого айпишника был скачан бинарник, лежащий на /app
-
+## Враг врага 2 - 4 
+В пакете 1424 через реверс шелл выполняется ./app \
+Ответ: Arrival Time: Jan 22, 2025 22:35:52.600327626 MSK \
+UTC Arrival Time: Jan 22, 2025 19:35:52.600327626 UTC
 ## Markdown 
 [Как пользоваться](https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet#lists)
